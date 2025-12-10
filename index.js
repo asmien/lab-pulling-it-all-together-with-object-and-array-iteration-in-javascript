@@ -114,3 +114,99 @@ function gameObject() {
         },
     };
 }
+
+
+// Getting a player's points 
+function numPointsScored(playerName) {
+    const game = gameObject();
+
+    for (const side of ["home", "away"]) {
+        const player = game[side].players[playerName];
+        if (player) return player.points;
+    }
+
+    return null;
+}
+
+
+// Same thing for their shoe size
+function shoeSize(playerName) {
+    const game = gameObject();
+
+    for (const side of ["home", "away"]) {
+        const player = game[side].players[playerName];
+        if (player) return player.shoe;
+    }
+
+    return null;
+}
+
+
+// Getting a team’s colors 
+function teamColors(teamName) {
+    const game = gameObject();
+
+    if (game.home.teamName === teamName) return game.home.colors;
+    if (game.away.teamName === teamName) return game.away.colors;
+
+    return null;
+}
+
+
+// returning both team names in an array
+function teamNames() {
+    const game = gameObject();
+    return [game.home.teamName, game.away.teamName];
+}
+
+
+// Returning the jersey numbers for all the players on a specific team
+function playerNumbers(teamName) {
+    const game = gameObject();
+
+    const team =
+        game.home.teamName === teamName
+            ? game.home
+            : game.away.teamName === teamName
+            ? game.away
+            : null;
+
+    if (!team) return [];
+
+    return Object.values(team.players).map(player => player.number);
+}
+
+
+// Returning all the stats of one player
+function playerStats(playerName) {
+    const game = gameObject();
+
+    for (const side of ["home", "away"]) {
+        const player = game[side].players[playerName];
+        if (player) return Object.assign({}, player); // copying the object without using spread
+    }
+
+    return null;
+}
+
+
+// Finding the player with the biggest shoe then returning their rebounds
+function bigShoeRebounds() {
+    const game = gameObject();
+
+    let biggestSize = -1;
+    let rebounds = null;
+
+    for (const side of ["home", "away"]) {
+        for (const name in game[side].players) {
+            const player = game[side].players[name];
+
+            if (player.shoe > biggestSize) {
+                biggestSize = player.shoe;
+                rebounds = player.rebounds;
+            }
+        }
+    }
+
+    return rebounds;
+}
